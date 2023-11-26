@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/fiesta/static/css/main.7de1d1e5.css",
-    "main.js": "/fiesta/static/js/main.bd29a673.js",
-    "index.html": "/fiesta/index.html",
-    "main.7de1d1e5.css.map": "/fiesta/static/css/main.7de1d1e5.css.map",
-    "main.bd29a673.js.map": "/fiesta/static/js/main.bd29a673.js.map"
+    "main.css": "/static/css/main.59c65c2d.css",
+    "main.js": "/static/js/main.f2aa5e57.js",
+    "index.html": "/index.html",
+    "main.59c65c2d.css.map": "/static/css/main.59c65c2d.css.map",
+    "main.f2aa5e57.js.map": "/static/js/main.f2aa5e57.js.map"
   },
   "entrypoints": [
-    "static/css/main.7de1d1e5.css",
-    "static/js/main.bd29a673.js"
+    "static/css/main.59c65c2d.css",
+    "static/js/main.f2aa5e57.js"
   ]
 }
