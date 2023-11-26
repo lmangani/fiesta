@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useSearchParams } from "react-router-dom";
 import { createConnection, parseIdFromURL } from "../utils/webRTC_utils";
 import { storeData } from "../utils/data_storage_utils";
 
+const queryParameters = new URLSearchParams(window.location.search);
+const room = queryParameters.get("room");
+console.log('host room', room);
+  
 const Host = () => {
   const [userName, setUserName] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [clipboardHasVideo, setClipboardHasVideo] = useState(false);
   const [hostPeerId, setHostPeerId] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-
+  
+  if (room) {
+    let url = "/"+room
+    return <Redirect to={url}  />
+  }
+  
+  /*
   useEffect(() => {
     if (navigator.clipboard) {
       navigator.clipboard.readText()
@@ -18,6 +28,7 @@ const Host = () => {
         });
     }
   }, []);
+  */
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -3,7 +3,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  background: var(--paper-light-blue-50);
+  background: #ffffff;
 }
 
 html,
@@ -34,8 +34,8 @@ code {
 }
 
 .select_column {
-  width: 50%;
-  height: 30%;
+  width: 80%;
+  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,21 +202,30 @@ html:not(.style-scope) {
 }
 
 .party-container {
-  padding: 3rem 1rem;
+  padding: 1rem 1rem;
   display: flex;
   justify-content: center;
   align-items: stretch;
+  height: 90vh;
+ 
 }
 
 .video-player-wrapper {
+  min-width: 100%;
   position: relative;
-  padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */
+  /* padding-top: 56.25% */ /* Player ratio: 100 / (1280 / 720) */
 }
 
 .video-player {
   position: absolute;
   top: 0;
   left: 0;
+  min-height: 100%;
+}
+
+iframe {
+   min-width: 75vw;
+   min-height: 80vh;
 }
 
 @media all and (max-width: 768px) {

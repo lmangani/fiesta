@@ -41,6 +41,8 @@ class Party extends React.Component {
   }
 
   componentDidMount() {
+
+    console.log(this.props.match.params.room, this.props.match.params.host_id )
     const hostId = this.props.match.params.host_id;
     const data = get_data(hostId);
     const colorCode = getRandomTagColor();

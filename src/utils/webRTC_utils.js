@@ -13,8 +13,8 @@ export const createConnection = (is_host, host_id = null, previous_id = null) =>
       debug: 2,
       // iceTransportPolicy: "relay",
       config: {
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-      }
+        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      },
     };
     if (peer_js_url) {
       settings.host = peer_js_url;
@@ -25,11 +25,13 @@ export const createConnection = (is_host, host_id = null, previous_id = null) =>
       settings.config.iceServers.push({
         urls: turn_url,
         username: turn_username,
-        credential: turn_credentials
+        credential: turn_credentials,
       });
     }
 
-    const peer = previous_id ? new Peer(previous_id, settings) : new Peer(settings);
+    const peer = previous_id
+      ? new Peer(previous_id, settings)
+      : new Peer(settings);
 
     window.peer_obj = peer;
     window.is_host = is_host;
@@ -38,35 +40,42 @@ export const createConnection = (is_host, host_id = null, previous_id = null) =>
       handle_connection(conn);
     }
 
-    peer.on("open", function(id) {
+    peer.on("open", function (id) {
+      console.log("connection open", id);
       window.peer_id = peer.id;
       resolve(peer.id, window.is_host);
     });
 
     //   Initializes connection
-    peer.on("connection", function(conn) {
+    peer.on("connection", function (conn) {
       console.log("connection called");
       handle_connection(conn);
     });
 
-    peer.on("close", function() {
+    peer.on("close", function () {
       console.log("peer closed");
-      window.global_this_obj.notify("Network disconnected please refresh", 10000);
+      window.global_this_obj.notify(
+        "Network disconnected please refresh",
+        10000
+      );
     });
 
-    peer.on("disconnected", function() {
+    peer.on("disconnected", function () {
       console.log("peer disconnected");
       // peer.reconnect();
-      window.global_this_obj.notify("Network disconnected please refresh", 10000);
+      window.global_this_obj.notify(
+        "Network disconnected please refresh",
+        10000
+      );
     });
   });
 
 function handle_connection(conn) {
-  conn.on("data", function(data) {
+  conn.on("data", function (data) {
     data_handler(data);
   });
 
-  conn.on("close", function() {
+  conn.on("close", function () {
     var connected_users = window.global_this_obj.state.connected_users;
     if (!connected_users || !connected_users[conn.peer]) {
       return;
@@ -128,12 +137,12 @@ function connect_to_peer(peer_id) {
 
 export function bulk_connect(peer_ids, host_data) {
   for (let id in peer_ids) {
-    setTimeout(function() {
+    setTimeout(function () {
       connect_to_peer(peer_ids[id]);
     }, 250);
   }
   const wait_time = 250 * peer_ids.length + 100;
-  setTimeout(function() {
+  setTimeout(function () {
     console.log("intro called");
     introduce(host_data.user_name, host_data.color_code);
   }, wait_time);
@@ -147,7 +156,7 @@ function chat_handler(chat_data) {
 
   chat_log.push(chat_data);
   window.global_this_obj.setState({
-    chat_log: chat_log
+    chat_log: chat_log,
   });
 }
 
@@ -164,7 +173,7 @@ function generate_chat_structure(msg, user_name, is_host, color_code) {
     user_type: is_host ? "Host" : "Client",
     message: btoa(unescape(encodeURIComponent(msg))),
     color_code: color_code,
-    time_stamp: Date.now()
+    time_stamp: Date.now(),
   };
   return format;
 }
@@ -177,7 +186,7 @@ function handle_youtube(data) {
     window.global_this_obj.setState({
       youtube_video_id: data.videoId,
       youtube_current_pos: Math.ceil(data.startSeconds),
-      player_state: data.event
+      player_state: data.event,
     });
   } else {
     window.global_this_obj.setState({ isStateChangeFromBroadcastData: true });
@@ -205,9 +214,9 @@ function handle_youtube(data) {
         `${data.user_name} changed the playback rate to ${data.playbackRate}x`
       );
     }
-    setTimeout(function() {
+    setTimeout(function () {
       window.global_this_obj.setState({
-        isStateChangeFromBroadcastData: false
+        isStateChangeFromBroadcastData: false,
       });
     }, 2500);
   }
@@ -246,7 +255,7 @@ function fetch_current_video_status(event) {
     event: yt_event,
     videoId: videoId,
     startSeconds: startSeconds,
-    playbackRate: playbackRate
+    playbackRate: playbackRate,
   };
 
   return payload;
@@ -265,18 +274,18 @@ function handle_intro(data) {
   var connected_users = window.global_this_obj.state.connected_users;
   connected_users[data.peer_id] = {
     user_name: data.user_name,
-    color_code: data.color_code
+    color_code: data.color_code,
   };
   window.global_this_obj.setState({ connected_users: connected_users });
   window.global_this_obj.notify(`${data.user_name} has joined the party`);
   if (window.is_host) {
     update_data(window.peer_obj.id, "connected_users", connected_users);
-    setTimeout(function() {
+    setTimeout(function () {
       sync_video();
       var msg_user_list = {
         data_type: "user_list",
         user_list: window.global_this_obj.state.connected_users,
-        only_host_controls: window.global_this_obj.state.only_host_controls
+        only_host_controls: window.global_this_obj.state.only_host_controls,
       };
       broadcastData(msg_user_list);
     }, 250);
@@ -286,7 +295,7 @@ function handle_intro(data) {
 function handle_intro_init(data) {
   window.global_this_obj.setState({
     connected_users: data.user_list,
-    only_host_controls: data.only_host_controls
+    only_host_controls: data.only_host_controls,
   });
 }
 
@@ -296,7 +305,7 @@ export function introduce(user_name, color_code) {
     user_name: user_name,
     peer_id: window.peer_obj.id,
     color_code: color_code,
-    time_stamp: Date.now()
+    time_stamp: Date.now(),
   };
   broadcastData(format);
 }
@@ -307,7 +316,7 @@ export function change_video(video_id, broadcast = false) {
   if (broadcast) {
     var format = {
       data_type: "change_video",
-      video_id: video_id
+      video_id: video_id,
     };
     broadcastData(format);
     // broadcast it to everyone
@@ -315,7 +324,8 @@ export function change_video(video_id, broadcast = false) {
 }
 
 export function parseIdFromURL(url) {
-  const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const regExp =
+    /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
   if (match && match[2].length === 11) {
     return match[2];
