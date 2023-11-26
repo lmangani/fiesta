@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/fiesta/static/css/main.7de1d1e5.css",
+    "main.js": "/fiesta/static/js/main.bd29a673.js",
+    "index.html": "/fiesta/index.html",
+    "main.7de1d1e5.css.map": "/fiesta/static/css/main.7de1d1e5.css.map",
+    "main.bd29a673.js.map": "/fiesta/static/js/main.bd29a673.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7de1d1e5.css",
+    "static/js/main.bd29a673.js"
+  ]
+}
